@@ -53,7 +53,7 @@ You can also catch a pokemon and save it to your Poke Bag and set a nickname to 
 
 - Clone or download this repository. You will need `node` and `npm` installed globally on your machine.
 - Run `npm install`
-- `npm start`: Runs the app in the development mode.
+- Runs the app in the development mode with `npm start`
 - Open [http://localhost:3000](http://localhost:3000).
 
 
