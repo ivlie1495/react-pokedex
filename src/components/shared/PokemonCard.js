@@ -7,7 +7,7 @@ import LinkNoDecoration from "./LinkNoDecoration";
 const PokemonCard = ({ name, image, nickname }) => {
   return (
     <Box cursor="pointer" padding={5} borderRadius={10} backgroundColor={palette.color.base.white}>
-      <LinkNoDecoration to={`/menus/pokemon/${name}`}>
+      <LinkNoDecoration to={`/pokemon/${name}`}>
         <FlexBox alignItems="center">
           <img 
             src={image}

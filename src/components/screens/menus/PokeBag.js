@@ -3,14 +3,14 @@ import Grid from "../../base/Grid";
 import { Heading } from "../../base/Typography";
 import PokemonCard from "../../shared/PokemonCard";
 
-const Pokedex = () => {
+const PokeBag = () => {
   const pokeDexStorage = localStorage.getItem('pokedex');
   const listPokeDex = pokeDexStorage ? JSON.parse(pokeDexStorage) : [];
 
   return (
     <Box paddingLeft={30} paddingRight={30}>
       <Box paddingBottom={20}>
-        <Heading>Pokedex</Heading>
+        <Heading>Poke Bag</Heading>
       </Box>
       <Box paddingBottom={20}>
         <Grid>
@@ -23,4 +23,4 @@ const Pokedex = () => {
   );
 };
 
-export default Pokedex;
+export default PokeBag;

@@ -19,16 +19,16 @@ const Home = () => {
           <SeacrhTextField placeholder="Search Pokemon" onFocus={() => navigate('/search')} />
         </Box>
         <Box display="flex" gap={10}>
-          <MenuBox href="/menus/pokemon" title="Pokemon" backgroundColor={palette.color.pokemon.grass} />
-          <MenuBox href="/menus/moves" title="Moves" backgroundColor={palette.color.pokemon.fire} />
+          <MenuBox href="/pokemon" title="Pokemon" backgroundColor={palette.color.pokemon.grass} />
+          <MenuBox href="/moves" title="Moves" backgroundColor={palette.color.pokemon.fire} />
         </Box>
         <Box display="flex" gap={10} paddingTop={20}>
-          <MenuBox href="/menus/abilities" title="Abilities" backgroundColor={palette.color.pokemon.water} />
-          <MenuBox href="/menus/genders" title="Genders" backgroundColor={palette.color.pokemon.electric} />
+          <MenuBox href="/abilities" title="Abilities" backgroundColor={palette.color.pokemon.water} />
+          <MenuBox href="/genders" title="Genders" backgroundColor={palette.color.pokemon.electric} />
         </Box>
         <Box display="flex" gap={10} paddingTop={20}>
-          <MenuBox href="/menus/locations" title="Locations" backgroundColor={palette.color.pokemon.shadow} />
-          <MenuBox href="/menus/types" title="Types" backgroundColor={palette.color.pokemon.psychic} />
+          <MenuBox href="/locations" title="Locations" backgroundColor={palette.color.pokemon.shadow} />
+          <MenuBox href="/types" title="Types" backgroundColor={palette.color.pokemon.psychic} />
         </Box>
       </Box>
       <Box padding={30}>

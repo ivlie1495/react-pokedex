@@ -71,7 +71,7 @@ const PokemonDetail = () => {
         setErrorSave(null);
         setShowModal(false);
 
-        navigate('/menus/pokedex');
+        navigate('/pokebag');
       } else {
         setErrorSave('Nickname already exist, use different name');  
       }
@@ -130,47 +130,46 @@ const PokemonDetail = () => {
       )}
       <Box paddingLeft={30} paddingRight={30}>
         <Box paddingBottom={20}>
-          {data?.pokemon?.name ? (
-            <Heading>{data?.pokemon?.name}</Heading>
-          ) : (
+          {loading && (
             <Skeleton width={150} height={30} />
+          )}
+          {data &&(
+            <Heading>{data?.pokemon?.name}</Heading>
           )}
         </Box>
         <Box paddingBottom={20} display="flex" gap={10}>
-          {data?.pokemon?.types ? data?.pokemon?.types?.map((item) => (
+          {loading && (
+            <Skeleton width={90} height={30} />
+          )}
+          {data && data?.pokemon?.types?.map((item) => (
             <Box key={item?.type?.name} paddingTop={5} paddingBottom={5} paddingLeft={10} paddingRight={10} borderRadius={10} backgroundColor={palette.color.pokemon[item?.type?.name]}>
               <BodyText color={palette.color.base.white} fontWeight="bold">
                 {item?.type?.name}
               </BodyText>
             </Box>
-          )) : (
-            <Skeleton width={90} height={30} />
-          )}
+          ))}
         </Box>
-        <FlexBox justifyContent="center">
-          {data?.pokemon?.sprites?.front_default ? (
+        {loading && (
+          <FlexBox justifyContent="center">
+            <Box padding={5}>
+              <Skeleton width={90} height={90} />
+            </Box>
+          </FlexBox>
+        )}
+        {data && (
+          <FlexBox justifyContent="center">
             <img 
               src={data?.pokemon?.sprites?.front_default}
               alt="pokemon"
               width={150}
             />
-          ) : (
-            <Box padding={5}>
-              <Skeleton width={90} height={90} />
-            </Box>
-          )}
-          {data?.pokemon?.sprites?.front_default ? (
             <img 
               src={data?.pokemon?.sprites?.back_default}
               alt="pokemon"
               width={150}
             />
-          ) : (
-            <Box padding={5}>
-              <Skeleton width={90} height={90} />
-            </Box>
-          )}
-        </FlexBox>
+          </FlexBox>
+        )}
         {failedCatch && (
           <Box paddingBottom={10}>
             <FlexBox justifyContent="center">
@@ -182,53 +181,52 @@ const PokemonDetail = () => {
         )}
         <Box paddingBottom={20}>
           <FlexBox justifyContent="center">
-            {data ? (
+            {loading && (
+              <Box margin={10}>
+                <Skeleton width={150} height={30} />
+              </Box>
+            )}
+            {data && (
               <Button data-testid="buttonCatchPokemon" variant="primary" onClick={catchPokemon}>
                 <BodyText fontWeight="bold">
                   Catch the Pokemon
                 </BodyText>
               </Button>
-            ) : (
-              <Box margin={10}>
-                <Skeleton width={150} height={30} />
-              </Box>
             )}
           </FlexBox>
         </Box>
       </Box>
       <Box>
-        {loading && (
-          <Box backgroundColor={palette.color.base.white} minHeight="100vh" paddingTop={20}>
-            <Loading />
+        <Box backgroundColor={palette.color.base.white} borderTopLeftRadius={30} borderTopRightRadius={30}>
+          <Box padding={20}>
+            <FlexBox justifyContent="space-between">
+              <TabBar 
+                active={activeMenu === TAB_MENU_ABOUT}
+                onChange={() => setActiveMenu(TAB_MENU_ABOUT)}
+                tabTitle="About"
+              />
+              <TabBar 
+                active={activeMenu === TAB_MENU_BASE_STATS}
+                onChange={() => setActiveMenu(TAB_MENU_BASE_STATS)}
+                tabTitle="Base Stats"
+              />
+              <TabBar 
+                active={activeMenu === TAB_MENU_MOVES}
+                onChange={() => setActiveMenu(TAB_MENU_MOVES)}
+                tabTitle="Moves"
+              />
+              <TabBar 
+                active={activeMenu === TAB_MENU_ABILITIES}
+                onChange={() => setActiveMenu(TAB_MENU_ABILITIES)}
+                tabTitle="Abilities"
+              />
+            </FlexBox>
           </Box>
-        )}
-        {data && (
-          <Box backgroundColor={palette.color.base.white} borderTopLeftRadius={30} borderTopRightRadius={30}>
-            <Box padding={20}>
-              <FlexBox justifyContent="space-between">
-                <TabBar 
-                  active={activeMenu === TAB_MENU_ABOUT}
-                  onChange={() => setActiveMenu(TAB_MENU_ABOUT)}
-                  tabTitle="About"
-                />
-                <TabBar 
-                  active={activeMenu === TAB_MENU_BASE_STATS}
-                  onChange={() => setActiveMenu(TAB_MENU_BASE_STATS)}
-                  tabTitle="Base Stats"
-                />
-                <TabBar 
-                  active={activeMenu === TAB_MENU_MOVES}
-                  onChange={() => setActiveMenu(TAB_MENU_MOVES)}
-                  tabTitle="Moves"
-                />
-                <TabBar 
-                  active={activeMenu === TAB_MENU_ABILITIES}
-                  onChange={() => setActiveMenu(TAB_MENU_ABILITIES)}
-                  tabTitle="Abilities"
-                />
-              </FlexBox>
-            </Box>
-            <Box minHeight="50vh" paddingLeft={20} paddingRight={20} paddingBottom={20}>
+          <Box minHeight="40vh" paddingLeft={20} paddingRight={20} paddingBottom={20}>
+            {loading && (
+              <Loading />
+            )}
+            {data && (
               <PokemonDetailContext.Provider value={{ loading, data, error }}>
                 {activeMenu === TAB_MENU_ABOUT && (
                   <PokemonAbout />
@@ -243,9 +241,9 @@ const PokemonDetail = () => {
                   <PokemonAbilities />
                 )}
               </PokemonDetailContext.Provider>
-            </Box>
+            )}
           </Box>
-        )}
+        </Box>
       </Box>
     </Box>
   );
