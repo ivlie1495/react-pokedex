@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Projec Title
+
+React Pokedex
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
