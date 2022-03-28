@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import App from './App';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPTH_URL,

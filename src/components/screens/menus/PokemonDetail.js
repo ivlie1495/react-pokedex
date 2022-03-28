@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { createContext, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Skeleton from 'react-loading-skeleton';
 import { POKEMON } from "../../../graphql/query";
 import palette from "../../../styles/theme";
 import Box from "../../base/Box";
@@ -16,6 +17,7 @@ import PokemonAbilities from "../pokemon-detail/PokemonAbilities";
 import PokemonAbout from "../pokemon-detail/PokemonAbout";
 import PokemonBaseStats from "../pokemon-detail/PokemonBaseStats";
 import PokemonMoves from "../pokemon-detail/PokemonMoves";
+import Error from "../../shared/Error";
 
 export const PokemonDetailContext = createContext();
 
@@ -83,9 +85,9 @@ const PokemonDetail = () => {
     setErrorSave(null);
   };
 
-  if (loading) {
+  if (error) {
     return (
-      <Loading />
+      <Error />
     );
   }
 
@@ -128,28 +130,46 @@ const PokemonDetail = () => {
       )}
       <Box paddingLeft={30} paddingRight={30}>
         <Box paddingBottom={20}>
-          <Heading>{data?.pokemon?.name}</Heading>
+          {data?.pokemon?.name ? (
+            <Heading>{data?.pokemon?.name}</Heading>
+          ) : (
+            <Skeleton width={150} height={30} />
+          )}
         </Box>
         <Box paddingBottom={20} display="flex" gap={10}>
-          {data?.pokemon?.types?.map((item) => (
+          {data?.pokemon?.types ? data?.pokemon?.types?.map((item) => (
             <Box key={item?.type?.name} paddingTop={5} paddingBottom={5} paddingLeft={10} paddingRight={10} borderRadius={10} backgroundColor={palette.color.pokemon[item?.type?.name]}>
               <BodyText color={palette.color.base.white} fontWeight="bold">
                 {item?.type?.name}
               </BodyText>
             </Box>
-          ))}
+          )) : (
+            <Skeleton width={90} height={30} />
+          )}
         </Box>
         <FlexBox justifyContent="center">
-          <img 
-            src={data?.pokemon?.sprites?.front_default}
-            alt="pokemon"
-            width={150}
-          />
-          <img 
-            src={data?.pokemon?.sprites?.back_default}
-            alt="pokemon"
-            width={150}
-          />
+          {data?.pokemon?.sprites?.front_default ? (
+            <img 
+              src={data?.pokemon?.sprites?.front_default}
+              alt="pokemon"
+              width={150}
+            />
+          ) : (
+            <Box padding={5}>
+              <Skeleton width={90} height={90} />
+            </Box>
+          )}
+          {data?.pokemon?.sprites?.front_default ? (
+            <img 
+              src={data?.pokemon?.sprites?.back_default}
+              alt="pokemon"
+              width={150}
+            />
+          ) : (
+            <Box padding={5}>
+              <Skeleton width={90} height={90} />
+            </Box>
+          )}
         </FlexBox>
         {failedCatch && (
           <Box paddingBottom={10}>
@@ -162,55 +182,70 @@ const PokemonDetail = () => {
         )}
         <Box paddingBottom={20}>
           <FlexBox justifyContent="center">
-            <Button data-testid="buttonCatchPokemon" variant="primary" onClick={catchPokemon}>
-              <BodyText fontWeight="bold">
-                Catch the Pokemon
-              </BodyText>
-            </Button>
+            {data ? (
+              <Button data-testid="buttonCatchPokemon" variant="primary" onClick={catchPokemon}>
+                <BodyText fontWeight="bold">
+                  Catch the Pokemon
+                </BodyText>
+              </Button>
+            ) : (
+              <Box margin={10}>
+                <Skeleton width={150} height={30} />
+              </Box>
+            )}
           </FlexBox>
         </Box>
       </Box>
-      <Box backgroundColor={palette.color.base.white} borderTopLeftRadius={30} borderTopRightRadius={30}>
-        <Box padding={20}>
-          <FlexBox justifyContent="space-between">
-            <TabBar 
-              active={activeMenu === TAB_MENU_ABOUT}
-              onChange={() => setActiveMenu(TAB_MENU_ABOUT)}
-              tabTitle="About"
-            />
-            <TabBar 
-              active={activeMenu === TAB_MENU_BASE_STATS}
-              onChange={() => setActiveMenu(TAB_MENU_BASE_STATS)}
-              tabTitle="Base Stats"
-            />
-            <TabBar 
-              active={activeMenu === TAB_MENU_MOVES}
-              onChange={() => setActiveMenu(TAB_MENU_MOVES)}
-              tabTitle="Moves"
-            />
-            <TabBar 
-              active={activeMenu === TAB_MENU_ABILITIES}
-              onChange={() => setActiveMenu(TAB_MENU_ABILITIES)}
-              tabTitle="Abilities"
-            />
-          </FlexBox>
-        </Box>
-        <Box minHeight="50vh" paddingLeft={20} paddingRight={20} paddingBottom={20}>
-          <PokemonDetailContext.Provider value={{ loading, data, error }}>
-            {activeMenu === TAB_MENU_ABOUT && (
-              <PokemonAbout />
-            )}
-            {activeMenu === TAB_MENU_BASE_STATS && (
-              <PokemonBaseStats />
-            )}
-            {activeMenu === TAB_MENU_MOVES && (
-              <PokemonMoves />
-            )}
-            {activeMenu === TAB_MENU_ABILITIES && (
-              <PokemonAbilities />
-            )}
-          </PokemonDetailContext.Provider>
-        </Box>
+      <Box>
+        {loading && (
+          <Box backgroundColor={palette.color.base.white} minHeight="100vh" paddingTop={20}>
+            <Loading />
+          </Box>
+        )}
+        {data && (
+          <Box backgroundColor={palette.color.base.white} borderTopLeftRadius={30} borderTopRightRadius={30}>
+            <Box padding={20}>
+              <FlexBox justifyContent="space-between">
+                <TabBar 
+                  active={activeMenu === TAB_MENU_ABOUT}
+                  onChange={() => setActiveMenu(TAB_MENU_ABOUT)}
+                  tabTitle="About"
+                />
+                <TabBar 
+                  active={activeMenu === TAB_MENU_BASE_STATS}
+                  onChange={() => setActiveMenu(TAB_MENU_BASE_STATS)}
+                  tabTitle="Base Stats"
+                />
+                <TabBar 
+                  active={activeMenu === TAB_MENU_MOVES}
+                  onChange={() => setActiveMenu(TAB_MENU_MOVES)}
+                  tabTitle="Moves"
+                />
+                <TabBar 
+                  active={activeMenu === TAB_MENU_ABILITIES}
+                  onChange={() => setActiveMenu(TAB_MENU_ABILITIES)}
+                  tabTitle="Abilities"
+                />
+              </FlexBox>
+            </Box>
+            <Box minHeight="50vh" paddingLeft={20} paddingRight={20} paddingBottom={20}>
+              <PokemonDetailContext.Provider value={{ loading, data, error }}>
+                {activeMenu === TAB_MENU_ABOUT && (
+                  <PokemonAbout />
+                )}
+                {activeMenu === TAB_MENU_BASE_STATS && (
+                  <PokemonBaseStats />
+                )}
+                {activeMenu === TAB_MENU_MOVES && (
+                  <PokemonMoves />
+                )}
+                {activeMenu === TAB_MENU_ABILITIES && (
+                  <PokemonAbilities />
+                )}
+              </PokemonDetailContext.Provider>
+            </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );
