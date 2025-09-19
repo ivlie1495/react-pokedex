@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { LOCATIONS } from "../../../graphql/query";
 import palette from "../../../styles/theme";
 import Box from "../../base/Box";
