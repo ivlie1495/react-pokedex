@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import Box from "../../base/Box";
 import Grid from "../../base/Grid";
 import { Heading } from "../../base/Typography";

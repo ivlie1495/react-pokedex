@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { createContext, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Skeleton from 'react-loading-skeleton';
